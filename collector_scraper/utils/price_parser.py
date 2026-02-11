@@ -1,5 +1,4 @@
 from __future__ import annotations
-
 import re
 
 
@@ -8,13 +7,28 @@ _DECIMAL_SUFFIX_DOT = re.compile(r"\.\d{1,2}$")
 _DECIMAL_SUFFIX_COMMA = re.compile(r",\d{1,2}$")
 
 
-def parse_price(text: str | None) -> float | None:
+def detect_currency(text: str) -> str:
+    if "₹" in text:
+        return "INR"
+    if "$" in text:
+        return "USD"
+    if "€" in text:
+        return "EUR"
+    if "C$" in text or "CAD" in text:
+        return "CAD"
+    return "UNKNOWN"
+
+
+def parse_price(text: str | None) -> tuple[float | None, str]:
     if not text:
-        return None
+        return None, "UNKNOWN"
+
+    currency = detect_currency(text)
 
     match = _NUMBER_TOKEN.search(text)
     if not match:
-        return None
+        return None, currency
+
     cleaned = match.group(0)
 
     if "," in cleaned and "." in cleaned:
@@ -35,9 +49,9 @@ def parse_price(text: str | None) -> float | None:
     try:
         value = float(normalized)
     except ValueError:
-        return None
+        return None, currency
 
     if value <= 0:
-        return None
+        return None, currency
 
-    return value
+    return value, currency
