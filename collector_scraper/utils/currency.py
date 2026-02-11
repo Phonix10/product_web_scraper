@@ -6,9 +6,7 @@ import requests
 from typing import Tuple, Optional
 
 
-# -------------------------------
-# PRICE PARSING SECTION
-# -------------------------------
+
 
 _NUMBER_TOKEN = re.compile(r"\d[\d,\.]*")
 _DECIMAL_SUFFIX_DOT = re.compile(r"\.\d{1,2}$")
