@@ -16,6 +16,12 @@ def parse_args() -> argparse.Namespace:
         default=30,
         help="Cap listings retained per site (default: 30)",
     )
+    parser.add_argument(
+        "--max-workers",
+        type=int,
+        default=5,
+        help="Number of site scrapers to run in parallel (default: 5)",
+    )
     return parser.parse_args()
 
 
@@ -24,6 +30,7 @@ def main() -> None:
     orchestration = run_all_scrapers(
         query=args.query,
         max_results_per_site=args.max_results_per_site,
+        max_workers=args.max_workers,
     )
 
     items = orchestration.items
@@ -38,6 +45,11 @@ def main() -> None:
         print("Source breakdown:")
         for source, count in sorted(source_counts.items()):
             print(f"  - {source}: {count}")
+
+    if orchestration.durations_ms:
+        print("Site timings (ms):")
+        for source, elapsed in sorted(orchestration.durations_ms.items()):
+            print(f"  - {source}: {elapsed}")
 
     print("Market stats:")
     print(f"  - raw_count: {stats['raw_count']}")

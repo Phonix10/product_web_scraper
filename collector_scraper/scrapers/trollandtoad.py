@@ -1,22 +1,12 @@
-from collector_scraper.core.generic_html_scraper import GenericListScraper
+from collector_scraper.core.shopify_scraper import ShopifyPredictiveScraper
 
 
-class TrollAndToadScraper(GenericListScraper):
+class TrollAndToadScraper(ShopifyPredictiveScraper):
     source = "trollandtoad"
     base_url = "https://www.trollandtoad.com"
-    search_url_template = "https://www.trollandtoad.com/search?search-words={query}"
-    item_selector = ".search-result, .product-card, .product-result"
-    title_selectors = (
-        "a.search-result-title",
-        ".product-card__title",
-        "a[href*='/p']",
-    )
-    price_selectors = (
-        ".search-result-price",
-        ".product-card__price",
-        ".price",
-    )
-    link_selectors = (
-        "a.search-result-title",
-        "a[href*='/p']",
+    max_items = 60
+    fallback_html_templates = (
+        "https://www.trollandtoad.com/search?q={query}&type=product",
+        "https://www.trollandtoad.com/search?q={query}",
+        "https://www.trollandtoad.com/products/search?search_words={query}",
     )

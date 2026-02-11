@@ -3,18 +3,27 @@ from collector_scraper.core.generic_html_scraper import GenericListScraper
 
 class ToysOnFireScraper(GenericListScraper):
     source = "toysonfire"
-    base_url = "https://toysonfire.in"
-    search_url_template = "https://toysonfire.in/search?q={query}"
-    item_selector = ".grid-product, .product-item, .card-wrapper"
+    base_url = "https://www.toysonfire.ca"
+    search_url_template = "https://www.toysonfire.ca/shop/search?search={query}"
+    fallback_search_url_templates = (
+        "https://www.toysonfire.ca/search?search={query}",
+        "https://www.toysonfire.ca/shop?q={query}",
+        "https://www.toysonfire.ca/shop",
+    )
+    item_selector = ".product-item, .shop-item, .product-card, .product"
     title_selectors = (
-        ".grid-product__title",
         ".product-item__title",
-        ".card-information__text",
-        "a[href*='/products/']",
+        ".product-title",
+        "a[href*='/shop/product/']",
+        "a[href*='/product/']",
     )
     price_selectors = (
-        ".grid-product__price",
-        ".price-item--last",
+        ".product-item__price",
+        ".product-price",
         ".price",
+        ".money",
     )
-    link_selectors = ("a[href*='/products/']",)
+    link_selectors = (
+        "a[href*='/shop/product/']",
+        "a[href*='/product/']",
+    )

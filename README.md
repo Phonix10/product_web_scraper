@@ -57,10 +57,13 @@ Optional arguments:
 
 ```bash
 python run.py "pokemon charizard base set 1999" --max-results-per-site 20
+python run.py "pokemon charizard base set 1999" --max-workers 6
 ```
 
 ## Notes
 
-- Selectors can change by site; each adapter is isolated so updates are easy.
-- Several targets may require browser automation later for full coverage.
+- Scrapers run in parallel; each site failure is isolated.
+- `pokevolt` uses `https://www.pokevolt.shop`.
+- `toysonfire` uses `https://www.toysonfire.ca`.
+- Some targets (for example TCGPlayer/Cardmarket) may still require browser automation or geo/session tuning for full coverage.
 - Current implementation is designed for safe iteration and architecture, not anti-bot bypassing.
